@@ -5,7 +5,6 @@ The following is a quick reference of documentations for various NES mappers. Cl
 **Warning:** This page is still heavily WIP and far from complete.
 
 | [$00](./00) | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  |
-| ----------- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- | ---- |
 | WIP         | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  |
 | WIP         | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  |
 | WIP         | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  | WIP  |
