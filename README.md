@@ -11,6 +11,8 @@ This section is currently under construction. More content coming soon!
 
 [**Step 2:** ROMs & Mappers](rom)
 
+[**Step 3:** The CPU](cpu) (**Note:** This section isn't fully complete yet)
+
 ## Quick Reference
 
 [Mappers](rom/mappers)
