@@ -203,6 +203,8 @@ The Zero Page Indexed Addressing variants of the instructions listed above each 
 
 ![timing_zpage_indexed_write](./timing_zpage_indexed_write.png)
 
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
 ### Zero Page Indexed Addressing - Read-Modify-Write Instructions
 
 This applies to the following instructions: `ASL, LSR, ROL, ROR, INC, DEC, SLO, SRE, RLA, RRA, ISB, DCP`
@@ -219,5 +221,7 @@ The Zero Page Addressing variants of the instructions listed above each take 6 C
 **Timing Diagram:**
 
 ![timing_zpage_indexed_rmw](./timing_zpage_indexed_rmw.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
 
 **Note:** This section is currently incomplete. Further documentation will be added soon™.
