@@ -56,7 +56,7 @@ Refer to the following image for reference on the meaning of the color-coded til
 
 ### Quick Reference
 
-- [Accumulator & Implied Addressing](#accumulator---implied-addressing)
+- [Accumulator & Implied Addressing](#accumulator--implied-addressing)
 - [Immediate Addressing](#immediate-addressing)
 - [Absolute Addressing - Read Instructions](#absolute-addressing---read-instructions)
 - [Absolute Addressing - Write Instructions](#absolute-addressing---write-instructions)
