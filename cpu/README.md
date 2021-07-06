@@ -44,6 +44,87 @@ The following image is a visualization of the Status Register P and the names fo
 
 ## The Instruction Set
 
-For a complete and easy-to-understand summary of all instructions and how they operate, check out [this website.](http://obelisk.me.uk/6502/reference.html) It describes the effects each instruction has on the status register, as well as the amount of CPU cycles each instruction (depending on the addressing mode used) takes.
+For a complete and easy-to-understand summary of all instructions and how they operate, check out [this website.](http://obelisk.me.uk/6502/reference.html) It describes the effects each instruction has on the status register, as well as the amount of CPU cycles each instruction (depending on the addressing mode used) takes. Refer to the following sections for in-depth descriptions and diagrams of timings for various types of instructions. (This information is taken from [the 6502_cpu.txt document](http://nesdev.com/6502_cpu.txt))
 
-**Note:** This section is currently under construction. Eventually, this will contain cycle-by-cycle descriptions of each instruction type / addressing mode combination. For a slightly less visually appealing description, refer to [the 6502_cpu.txt document.](http://nesdev.com/6502_cpu.txt)
+### Terminology
+
+Due to the property of each CPU cycle being either a read from or write to memory, "dummy operations" can occur while the CPU is processing a cycle where memory accesses aren't required. These are referred to as "dummy reads" and "dummy writes" and may be used by games and mappers for timing purposes.
+
+Refer to the following image for reference on the meaning of the color-coded tiles in the following timing diagrams:
+
+![timing_diagram_ref](./timing_diagram_ref.png)
+
+### Accumulator & Implied Addressing
+
+This applies to the following instructions: `ASL, CLC, CLD, CLI, CLV, DEX, DEY, INX, INY, LSR, NOP, ROL, ROR, SEC, SED, SEI, TAX, TAY, TSX, TXA, TXS, TYA`
+
+The Accumulator / Implied Addressing variants of the instructions listed above each take 2 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The operation is performed on the target register (`NOP` idles during this cycle). A dummy read occurs on the address stored in PC, but PC is not incremented.
+
+**Timing Diagram:**
+
+![timing_acc_impl](./timing_acc_impl.png)
+
+### Immediate Addressing
+
+This applies to the following instructions: `ADC, AND, CMP, CPX, CPY, EOR, LDA, LDX, LDY, ORA, SBC`
+
+The Immediate Addressing variants of the instructions listed above each take 2 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The next byte after the opcode is read using the address stored in PC and PC is incremented by 1. The operation is performed on the target register during the same cycle.
+
+**Timing Diagram:**
+
+![timing_imm](./timing_imm.png)
+
+### Absolute Addressing - Read Instructions
+
+This applies to the following instructions: `LDA, LDX, LDY, EOR, AND, ORA, ADC, SBC, CMP, BIT, LAX, NOP`
+
+The Absolute Addressing variants of the instructions listed above each take 4 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The low byte of the source address is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The high byte of the source address is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 4:** The operation is performed on the target register using the value read from the memory address fetched in the previous 2 cycles.
+
+**Timing Diagram:**
+
+![timing_abs_read](./timing_abs_read.png)
+
+### Absolute Addressing - Write Instructions
+
+This applies to the following instructions: `STA, STX, STY, SAX`
+
+The Absolute Addressing variants of the instructions listed above each take 4 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The low byte of the source address is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The high byte of the source address is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 4:** The value is written to the memory address fetched in the previous 2 cycles.
+
+**Timing Diagram:**
+
+![timing_abs_write](./timing_abs_write.png)
+
+### Absolute Addressing - Read-Modify-Write Instructions
+
+This applies to the following instructions: `ASL, LSR, ROL, ROR, INC, DEC, SLO, SRE, RLA, RRA, ISB, DCP`
+
+The Absolute Addressing variants of the instructions listed above each take 6 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The low byte of the source address is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The high byte of the source address is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 4:** The value at the memory address fetched in the previous 2 cycles is read and temporarily buffered.
+* **Cycle 5:** The value fetched in the previous cycle is dummy-written to the memory address fetched in cycles 2 & 3. Afterwards, the operation is performed on the value and the result is buffered.
+* **Cycle 6:** The result value is written to the memory address fetched in cycles 2 & 3.
+
+**Timing Diagram:**
+
+![timing_abs_rmw](./timing_abs_rmw.png)
+
+**Note:** This section is currently incomplete. Further documentation will be added soon™.
