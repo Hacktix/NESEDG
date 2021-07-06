@@ -229,8 +229,8 @@ The Zero Page Addressing variants of the instructions listed above each take 6 C
 * **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
 * **Cycle 3:** The value at the memory address fetched in the previous cycle (with the upper byte set to `$00`) is dummy-read. Afterwards, the value of the index register (X or Y, depending on the instruction) is added to the address and buffered. This is done within the boundaries of 8 bit values, so the result is effectively ANDed with `$FF`.
 * **Cycle 4:** A value is read from the memory address determined in the previous cycle and buffered.
-* **Cycle 5:** A value is dummy-read from the same memory address as in the previous cycle. Afterwards, the operation is performed on the buffered value and the result is once again buffered.
-* **Cycle 6:** The buffered result value is written to the memory address determined in Cycle 3.
+* **Cycle 5:** The buffered value is dummy-written to the memory address determined in cycle 3. Afterwards, the operation is performed on the buffered value and the result is once again buffered.
+* **Cycle 6:** The buffered result value is written to the memory address determined in cycle 3.
 
 **Timing Diagram:**
 
