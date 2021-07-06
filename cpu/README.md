@@ -127,4 +127,97 @@ The Absolute Addressing variants of the instructions listed above each take 6 CP
 
 ![timing_abs_rmw](./timing_abs_rmw.png)
 
+### Zero Page Addressing - Read Instructions
+
+This applies to the following instructions: `LDA, LDX, LDY, EOR, AND, ORA, ADC, SBC, CMP, BIT, LAX, NOP`
+
+The Zero Page Addressing variants of the instructions listed above each take 3 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The byte fetched in the previous cycle is used as the lower byte of the memory address while the high byte is set to `$00`. The operation is performed on the target register using the value read from this address.
+
+**Timing Diagram:**
+
+![timing_zpage_read](./timing_zpage_read.png)
+
+### Zero Page Addressing - Write Instructions
+
+This applies to the following instructions: `STA, STX, STY, SAX`
+
+The Zero Page Addressing variants of the instructions listed above each take 3 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The byte fetched in the previous cycle is used as the lower byte of the memory address while the high byte is set to `$00`. The value is then written to this address.
+
+**Timing Diagram:**
+
+![timing_zpage_write](./timing_zpage_write.png)
+
+### Zero Page Addressing - Read-Modify-Write Instructions
+
+This applies to the following instructions: `ASL, LSR, ROL, ROR, INC, DEC, SLO, SRE, RLA, RRA, ISB, DCP`
+
+The Zero Page Addressing variants of the instructions listed above each take 5 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The byte fetched in the previous cycle is used as the lower byte of the memory address while the high byte is set to `$00`. A value is read from this memory addressed and buffered.
+* **Cycle 4:** The buffered value is dummy-written back to the address used in the previous cycle. Afterwards, the operation is performed on the value and the result is buffered.
+* **Cycle 5:** The buffered result value is written to the address used in Cycle 3.
+
+**Timing Diagram:**
+
+![timing_zpage_rmw](./timing_zpage_rmw.png)
+
+### Zero Page Indexed Addressing - Read Instructions
+
+This applies to the following instructions: `LDA, LDX, LDY, EOR, AND, ORA, ADC, SBC, CMP, BIT, LAX, NOP`
+
+The Zero Page Indexed Addressing variants of the instructions listed above each take 4 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The value at the memory address fetched in the previous cycle (with the upper byte set to `$00`) is dummy-read. Afterwards, the value of the index register (X or Y, depending on the instruction) is added to the address and buffered. This is done within the boundaries of 8 bit values, so the result is effectively ANDed with `$FF`.
+* **Cycle 4:** The operation is performed on the target register using the value read from the memory address determined in the previous cycle.
+
+**Timing Diagram:**
+
+![timing_zpage_indexed_read](./timing_zpage_indexed_read.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
+### Zero Page Indexed Addressing - Write Instructions
+
+This applies to the following instructions: `STA, STX, STY, SAX`
+
+The Zero Page Indexed Addressing variants of the instructions listed above each take 4 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The value at the memory address fetched in the previous cycle (with the upper byte set to `$00`) is dummy-read. Afterwards, the value of the index register (X or Y, depending on the instruction) is added to the address and buffered. This is done within the boundaries of 8 bit values, so the result is effectively ANDed with `$FF`.
+* **Cycle 4:** The value is written to the memory address determined in the previous cycle.
+
+**Timing Diagram:**
+
+![timing_zpage_indexed_write](./timing_zpage_indexed_write.png)
+
+### Zero Page Indexed Addressing - Read-Modify-Write Instructions
+
+This applies to the following instructions: `ASL, LSR, ROL, ROR, INC, DEC, SLO, SRE, RLA, RRA, ISB, DCP`
+
+The Zero Page Addressing variants of the instructions listed above each take 6 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The value at the memory address fetched in the previous cycle (with the upper byte set to `$00`) is dummy-read. Afterwards, the value of the index register (X or Y, depending on the instruction) is added to the address and buffered. This is done within the boundaries of 8 bit values, so the result is effectively ANDed with `$FF`.
+* **Cycle 4:** A value is read from the memory address determined in the previous cycle and buffered.
+* **Cycle 5:** A value is dummy-read from the same memory address as in the previous cycle. Afterwards, the operation is performed on the buffered value and the result is once again buffered.
+* **Cycle 6:** The buffered result value is written to the memory address determined in Cycle 3.
+
+**Timing Diagram:**
+
+![timing_zpage_indexed_rmw](./timing_zpage_indexed_rmw.png)
+
 **Note:** This section is currently incomplete. Further documentation will be added soon™.
