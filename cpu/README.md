@@ -54,6 +54,20 @@ Refer to the following image for reference on the meaning of the color-coded til
 
 ![timing_diagram_ref](./timing_diagram_ref.png)
 
+### Quick Reference
+
+- [Accumulator & Implied Addressing](#accumulator---implied-addressing)
+- [Immediate Addressing](#immediate-addressing)
+- [Absolute Addressing - Read Instructions](#absolute-addressing---read-instructions)
+- [Absolute Addressing - Write Instructions](#absolute-addressing---write-instructions)
+- [Absolute Addressing - Read-Modify-Write Instructions](#absolute-addressing---read-modify-write-instructions)
+- [Zero Page Addressing - Read Instructions](#zero-page-addressing---read-instructions)
+- [Zero Page Addressing - Write Instructions](#zero-page-addressing---write-instructions)
+- [Zero Page Addressing - Read-Modify-Write Instructions](#zero-page-addressing---read-modify-write-instructions)
+- [Zero Page Indexed Addressing - Read Instructions](#zero-page-indexed-addressing---read-instructions)
+- [Zero Page Indexed Addressing - Write Instructions](#zero-page-indexed-addressing---write-instructions)
+- [Zero Page Indexed Addressing - Read-Modify-Write Instructions](#zero-page-indexed-addressing---read-modify-write-instructions)
+
 ### Accumulator & Implied Addressing
 
 This applies to the following instructions: `ASL, CLC, CLD, CLI, CLV, DEX, DEY, INX, INY, LSR, NOP, ROL, ROR, SEC, SED, SEI, TAX, TAY, TSX, TXA, TXS, TYA`
