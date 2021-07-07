@@ -67,6 +67,9 @@ Refer to the following image for reference on the meaning of the color-coded til
 - [Zero Page Indexed Addressing - Read Instructions](#zero-page-indexed-addressing---read-instructions)
 - [Zero Page Indexed Addressing - Write Instructions](#zero-page-indexed-addressing---write-instructions)
 - [Zero Page Indexed Addressing - Read-Modify-Write Instructions](#zero-page-indexed-addressing---read-modify-write-instructions)
+- [Absolute Indexed Addressing - Read Instructions](#absolute-indexed-addressing---read-instructions)
+- [Absolute Indexed Addressing - Write Instructions](#absolute-indexed-addressing---write-instructions)
+- [Absolute Indexed Addressing - Read-Modify-Write Instructions](#absolute-indexed-addressing---read-modify-write-instructions)
 
 ### Accumulator & Implied Addressing
 
@@ -237,5 +240,63 @@ The Zero Page Addressing variants of the instructions listed above each take 6 C
 ![timing_zpage_indexed_rmw](./timing_zpage_indexed_rmw.png)
 
 (`I` in the diagram above represents the value of the index register used to offset the given address)
+
+### Absolute Indexed Addressing - Read Instructions
+
+This applies to the following instructions: `LDA, LDX, LDY, EOR, AND, ORA, ADC, SBC, CMP, BIT, LAX, LAE, SHS, NOP`
+
+The Absolute Indexed Addressing variants of the instructions listed above each take either 4 or 5 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The low byte of the source address is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The high byte of the source address is fetched from the address stored in PC and PC is incremented by 1. Additionally, the value of the index register (X or Y, depending on the instruction) is added to the low byte of the address fetched in the previous cycle. The result is limited to 8 bits, so it is effectively ANDed with `$FF`, however, it is kept track of whether the addition overflowed.
+* **Cycle 4:** A value is read from the memory address resulting from the combination of the high byte fetched in the previous cycle and the low byte calculated in the previous cycle. If an overflow occurred during the addition in the previous cycle, the high byte is incremented by 1 after this dummy-read occurs. Otherwise the operation is performed using the read value and the instruction ends at this cycle.
+* **Cycle 5:** This cycle is only executed if the addition in cycle 3 caused an overflow. The low address byte calculated in cycle 3 is combined with the incremented high byte from the previous cycle and the value from the resulting memory address is read.
+
+**Timing Diagram:**
+
+![timing_abs_indexed_read](./timing_abs_indexed_read.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
+### Absolute Indexed Addressing - Write Instructions
+
+This applies to the following instructions: `STA, STX, STY, SHA, SHX, SHY`
+
+The Absolute Indexed Addressing variants of the instructions listed above each take 5 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The low byte of the source address is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The high byte of the source address is fetched from the address stored in PC and PC is incremented by 1. Additionally, the value of the index register (X or Y, depending on the instruction) is added to the low byte of the address fetched in the previous cycle. The result is limited to 8 bits, so it is effectively ANDed with `$FF`, however, it is kept track of whether the addition overflowed.
+* **Cycle 4:** A value is dummy-read from the memory address resulting from the combination of the high byte fetched in the previous cycle and the low byte calculated in the previous cycle. If an overflow occurred during the addition in the previous cycle, the high byte is incremented by 1 after this dummy-read occurs.
+* **Cycle 5:** The value is written to the adjusted memory address determined in the previous cycle.
+
+**Timing Diagram:**
+
+![timing_abs_indexed_write](./timing_abs_indexed_write.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
+### Absolute Indexed Addressing - Read-Modify-Write Instructions
+
+This applies to the following instructions: `ASL, LSR, ROL, ROR, INC, DEC, SLO, SRE, RLA, RRA, ISB, DCP`
+
+The Absolute Indexed Addressing variants of the instructions listed above each take 7 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The low byte of the source address is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The high byte of the source address is fetched from the address stored in PC and PC is incremented by 1. Additionally, the value of the index register (X or Y, depending on the instruction) is added to the low byte of the address fetched in the previous cycle. The result is limited to 8 bits, so it is effectively ANDed with `$FF`, however, it is kept track of whether the addition overflowed.
+* **Cycle 4:** A value is dummy-read from the memory address resulting from the combination of the high byte fetched in the previous cycle and the low byte calculated in the previous cycle. If an overflow occurred during the addition in the previous cycle, the high byte is incremented by 1 after this dummy-read occurs.
+* **Cycle 5:** A value is read from the adjusted memory address determined in the previous cycle and buffered.
+* **Cycle 6:** The originally read value is dummy-written to the same memory address as in the previous cycle. Afterwards, the operation is performed on the buffered value and the result is buffered.
+* **Cycle 7:** The resulting value is written to the memory address determined in cycle 4.
+
+**Timing Diagram:**
+
+![timing_abs_indexed_rmw](./timing_abs_indexed_rmw.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
+
 
 **Note:** This section is currently incomplete. Further documentation will be added soon™.
