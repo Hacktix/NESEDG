@@ -269,6 +269,8 @@ The Absolute Indexed Addressing variants of the instructions listed above each t
 
 (`I` in the diagram above represents the value of the index register used to offset the given address)
 
+(`*` in the diagram above marks a read from an incorrect address due to the upper address byte not being adjusted to an overflow from the lower byte)
+
 ### Absolute Indexed Addressing - Write Instructions
 
 This applies to the following instructions: `STA, STX, STY, SHA, SHX, SHY`
@@ -286,6 +288,8 @@ The Absolute Indexed Addressing variants of the instructions listed above each t
 ![timing_abs_indexed_write](./timing_abs_indexed_write.png)
 
 (`I` in the diagram above represents the value of the index register used to offset the given address)
+
+(`*` in the diagram above marks a read from a potentially incorrect address due to the upper address byte not being adjusted to an overflow from the lower byte)
 
 ### Absolute Indexed Addressing - Read-Modify-Write Instructions
 
@@ -307,6 +311,8 @@ The Absolute Indexed Addressing variants of the instructions listed above each t
 
 (`I` in the diagram above represents the value of the index register used to offset the given address)
 
+(`*` in the diagram above marks a read from a potentially incorrect address due to the upper address byte not being adjusted to an overflow from the lower byte)
+
 ### Indexed Indirect Addressing - Read Instructions
 
 This applies to the following instructions: `LDA, ORA, EOR, AND, ADC, CMP, SBC, LAX`
@@ -315,7 +321,7 @@ The Indexed Indirect Addressing variants of the instructions listed above each t
 
 * **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
 * **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
-* **Cycle 3:** The byte fetched in the previous cycle is used as the low address byte while the high byte is set to 0. A dummy read occurs on the resulting memory address. After the read occurs, the value of the index register is added to the address. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 3:** The byte fetched in the previous cycle is used as the low address byte while the high byte is set to 0. A dummy read occurs on the resulting memory address. After the read occurs, the value of the index register (X or Y, depending on the instruction) is added to the address. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
 * **Cycle 4:** The value at the address calculated in the previous cycle is read and buffered. The address is incremented, but still limited to 8 bits, so it is effectively ANDed with `$FF`.
 * **Cycle 5:** The value at the incremented address from the previous cycle is read and buffered as the upper byte of a new address, while the value read in the previous cycle represents the lower byte.
 * **Cycle 6:** The operation is performed on the target register using the value read from the memory address calculated in the previous cycle.
@@ -334,7 +340,7 @@ The Indexed Indirect Addressing variants of the instructions listed above each t
 
 * **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
 * **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
-* **Cycle 3:** The byte fetched in the previous cycle is used as the low address byte while the high byte is set to 0. A dummy read occurs on the resulting memory address. After the read occurs, the value of the index register is added to the address. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 3:** The byte fetched in the previous cycle is used as the low address byte while the high byte is set to 0. A dummy read occurs on the resulting memory address. After the read occurs, the value of the index register (X or Y, depending on the instruction) is added to the address. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
 * **Cycle 4:** The value at the address calculated in the previous cycle is read and buffered. The address is incremented, but still limited to 8 bits, so it is effectively ANDed with `$FF`.
 * **Cycle 5:** The value at the incremented address from the previous cycle is read and buffered as the upper byte of a new address, while the value read in the previous cycle represents the lower byte.
 * **Cycle 6:** The value is written to the memory address calculated in the previous cycle.
@@ -353,7 +359,7 @@ The Indexed Indirect Addressing variants of the instructions listed above each t
 
 * **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
 * **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
-* **Cycle 3:** The byte fetched in the previous cycle is used as the low address byte while the high byte is set to 0. A dummy read occurs on the resulting memory address. After the read occurs, the value of the index register is added to the address. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 3:** The byte fetched in the previous cycle is used as the low address byte while the high byte is set to 0. A dummy read occurs on the resulting memory address. After the read occurs, the value of the index register (X or Y, depending on the instruction) is added to the address. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
 * **Cycle 4:** The value at the address calculated in the previous cycle is read and buffered. The address is incremented, but still limited to 8 bits, so it is effectively ANDed with `$FF`.
 * **Cycle 5:** The value at the incremented address from the previous cycle is read and buffered as the upper byte of a new address, while the value read in the previous cycle represents the lower byte.
 * **Cycle 6:** The value at the memory address calculated in the previous cycle is read and buffered.
@@ -365,5 +371,70 @@ The Indexed Indirect Addressing variants of the instructions listed above each t
 ![timing_indexed_indirect_rmw](./timing_indexed_indirect_rmw.png)
 
 (`I` in the diagram above represents the value of the index register used to offset the given address)
+
+### Indirect Indexed Addressing - Read Instructions
+
+This applies to the following instructions: `LDA, EOR, AND, ORA, ADC, SBC, CMP`
+
+The Indirect Indexed Addressing variants of the instructions listed above each take either 5 or 6 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The value at the memory address fetched in the previous cycle (with the upper byte set to `$00`) is read and buffered and the address is incremented. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 4:** The value at the incremented address from the previous cycle is read and buffered. Afterwards, the value of the index register (X or Y, depending on the instruction) is added to the value read in the previous cycle. The result is limited to 8 bits, so it is effectively ANDed with `$FF`, however, it is kept track of whether the addition overflows.
+* **Cycle 5:** A value is read from the memory address resulting from the combination of the high byte fetched in the previous cycle and the low byte calculated in the previous cycle. If an overflow occurred during the addition in the previous cycle, the high byte is incremented by 1 after this dummy-read occurs. Otherwise the operation is performed using the read value and the instruction ends at this cycle.
+* **Cycle 6:** This cycle is only executed if the addition in cycle 4 caused an overflow. The low address byte calculated in cycle 4 is combined with the incremented high byte from the previous cycle and the value from the resulting memory address is read.
+
+**Timing Diagram:**
+
+![timing_indirect_indexed_read](./timing_indirect_indexed_read.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
+(`*` in the diagram above marks a read from an incorrect address due to the upper address byte not being adjusted to an overflow from the lower byte)
+
+### Indirect Indexed Addressing - Write Instructions
+
+This applies to the following instructions: `STA, SHA`
+
+The Indirect Indexed Addressing variants of the instructions listed above each take 6 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The value at the memory address fetched in the previous cycle (with the upper byte set to `$00`) is read and buffered and the address is incremented. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 4:** The value at the incremented address from the previous cycle is read and buffered. Afterwards, the value of the index register (X or Y, depending on the instruction) is added to the value read in the previous cycle. The result is limited to 8 bits, so it is effectively ANDed with `$FF`, however, it is kept track of whether the addition overflows.
+* **Cycle 5:** A value is dummy-read from the memory address resulting from the combination of the high byte fetched in the previous cycle and the low byte calculated in the previous cycle. If an overflow occurred during the addition in the previous cycle, the high byte is incremented by 1 after this dummy-read occurs.
+* **Cycle 6:** The value is written to the memory address resulting from the combination of the high byte calculated in the previous cycle and the low byte calculated in cycle 4.
+
+**Timing Diagram:**
+
+![timing_indirect_indexed_write](./timing_indirect_indexed_write.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
+(`*` in the diagram above marks a read from a potentially incorrect address due to the upper address byte not being adjusted to an overflow from the lower byte)
+
+### Indirect Indexed Addressing - Read-Modify-Write Instructions
+
+This applies to the following instructions: `SLO, SRE, RLA, RRA, ISB, DCP`
+
+The Indirect Indexed Addressing variants of the instructions listed above each take 8 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The value at the memory address fetched in the previous cycle (with the upper byte set to `$00`) is read and buffered and the address is incremented. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 4:** The value at the incremented address from the previous cycle is read and buffered. Afterwards, the value of the index register (X or Y, depending on the instruction) is added to the value read in the previous cycle. The result is limited to 8 bits, so it is effectively ANDed with `$FF`, however, it is kept track of whether the addition overflows.
+* **Cycle 5:** A value is dummy-read from the memory address resulting from the combination of the high byte fetched in the previous cycle and the low byte calculated in the previous cycle. If an overflow occurred during the addition in the previous cycle, the high byte is incremented by 1 after this dummy-read occurs.
+* **Cycle 6:** A value is read from the memory address resulting from the combination of the high byte calculated in the previous cycle and the low byte calculated in cycle 4 and buffered.
+* **Cycle 7:** The buffered value is dummy-written back to the same address as it was read from. Afterwards, the operation is performed on the buffered value and the result is buffered.
+* **Cycle 8:** The resulting value is written to the memory address used in the previous two cycles.
+
+**Timing Diagram:**
+
+![timing_indirect_indexed_rmw](./timing_indirect_indexed_rmw.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
+(`*` in the diagram above marks a read from a potentially incorrect address due to the upper address byte not being adjusted to an overflow from the lower byte)
 
 **Note:** This section is currently incomplete. Further documentation will be added soon™.
