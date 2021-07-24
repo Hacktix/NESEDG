@@ -87,7 +87,7 @@ Refer to the following image for reference on the meaning of the color-coded til
 
 ### Accumulator & Implied Addressing
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `ASL, CLC, CLD, CLI, CLV, DEX, DEY, INX, INY, LSR, NOP, ROL, ROR, SEC, SED, SEI, TAX, TAY, TSX, TXA, TXS, TYA`
 
@@ -102,7 +102,7 @@ The Accumulator / Implied Addressing variants of the instructions listed above e
 
 ### Immediate Addressing
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `ADC, AND, CMP, CPX, CPY, EOR, LDA, LDX, LDY, ORA, SBC`
 
@@ -117,7 +117,7 @@ The Immediate Addressing variants of the instructions listed above each take 2 C
 
 ### Absolute Addressing - Read Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `LDA, LDX, LDY, EOR, AND, ORA, ADC, SBC, CMP, BIT, LAX, NOP`
 
@@ -134,7 +134,7 @@ The Absolute Addressing variants of the instructions listed above each take 4 CP
 
 ### Absolute Addressing - Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `STA, STX, STY, SAX`
 
@@ -151,7 +151,7 @@ The Absolute Addressing variants of the instructions listed above each take 4 CP
 
 ### Absolute Addressing - Read-Modify-Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `ASL, LSR, ROL, ROR, INC, DEC, SLO, SRE, RLA, RRA, ISB, DCP`
 
@@ -170,7 +170,7 @@ The Absolute Addressing variants of the instructions listed above each take 6 CP
 
 ### Zero Page Addressing - Read Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `LDA, LDX, LDY, EOR, AND, ORA, ADC, SBC, CMP, BIT, LAX, NOP`
 
@@ -186,7 +186,7 @@ The Zero Page Addressing variants of the instructions listed above each take 3 C
 
 ### Zero Page Addressing - Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `STA, STX, STY, SAX`
 
@@ -202,7 +202,7 @@ The Zero Page Addressing variants of the instructions listed above each take 3 C
 
 ### Zero Page Addressing - Read-Modify-Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `ASL, LSR, ROL, ROR, INC, DEC, SLO, SRE, RLA, RRA, ISB, DCP`
 
@@ -220,7 +220,7 @@ The Zero Page Addressing variants of the instructions listed above each take 5 C
 
 ### Zero Page Indexed Addressing - Read Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `LDA, LDX, LDY, EOR, AND, ORA, ADC, SBC, CMP, BIT, LAX, NOP`
 
@@ -239,7 +239,7 @@ The Zero Page Indexed Addressing variants of the instructions listed above each 
 
 ### Zero Page Indexed Addressing - Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `STA, STX, STY, SAX`
 
@@ -258,7 +258,7 @@ The Zero Page Indexed Addressing variants of the instructions listed above each 
 
 ### Zero Page Indexed Addressing - Read-Modify-Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `ASL, LSR, ROL, ROR, INC, DEC, SLO, SRE, RLA, RRA, ISB, DCP`
 
@@ -279,7 +279,7 @@ The Zero Page Addressing variants of the instructions listed above each take 6 C
 
 ### Absolute Indexed Addressing - Read Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `LDA, LDX, LDY, EOR, AND, ORA, ADC, SBC, CMP, BIT, LAX, LAE, SHS, NOP`
 
@@ -301,7 +301,7 @@ The Absolute Indexed Addressing variants of the instructions listed above each t
 
 ### Absolute Indexed Addressing - Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `STA, STX, STY, SHA, SHX, SHY`
 
@@ -323,7 +323,7 @@ The Absolute Indexed Addressing variants of the instructions listed above each t
 
 ### Absolute Indexed Addressing - Read-Modify-Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `ASL, LSR, ROL, ROR, INC, DEC, SLO, SRE, RLA, RRA, ISB, DCP`
 
@@ -347,7 +347,7 @@ The Absolute Indexed Addressing variants of the instructions listed above each t
 
 ### Indexed Indirect Addressing - Read Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `LDA, ORA, EOR, AND, ADC, CMP, SBC, LAX`
 
@@ -368,7 +368,7 @@ The Indexed Indirect Addressing variants of the instructions listed above each t
 
 ### Indexed Indirect Addressing - Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `STA, SAX`
 
@@ -389,7 +389,7 @@ The Indexed Indirect Addressing variants of the instructions listed above each t
 
 ### Indexed Indirect Addressing - Read-Modify-Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `SLO, SRE, RLA, RRA, ISB, DCP`
 
@@ -412,7 +412,7 @@ The Indexed Indirect Addressing variants of the instructions listed above each t
 
 ### Indirect Indexed Addressing - Read Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `LDA, EOR, AND, ORA, ADC, SBC, CMP`
 
@@ -435,7 +435,7 @@ The Indirect Indexed Addressing variants of the instructions listed above each t
 
 ### Indirect Indexed Addressing - Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `STA, SHA`
 
@@ -458,7 +458,7 @@ The Indirect Indexed Addressing variants of the instructions listed above each t
 
 ### Indirect Indexed Addressing - Read-Modify-Write Instructions
 
-[^ Back to Addressing Modes Quick Reference](#quick-reference)
+[Back to Addressing Modes Quick Reference](#quick-reference)
 
 This applies to the following instructions: `SLO, SRE, RLA, RRA, ISB, DCP`
 
