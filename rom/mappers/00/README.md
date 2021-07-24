@@ -1,3 +1,5 @@
+[<< Back to Last Page](../)
+
 # Mapper 0 (NROM)
 
 The mapper with the mapper number `$00` is often referred to as NROM and is the most basic of the available mappers.

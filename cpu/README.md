@@ -1,3 +1,5 @@
+[<< Back to Last Page](../)
+
 # The CPU
 
 After getting a basic memory and ROM loading system into place, the next step is usually emulating the CPU. The following section is going to elaborate on the basic way a CPU operates, but if you've already written an emulator before, chances are you'll already know most of it, so you can safely skip it.
@@ -356,5 +358,7 @@ The Indexed Indirect Addressing variants of the instructions listed above each t
 **Timing Diagram:**
 
 ![timing_indexed_indirect_rmw](./timing_indexed_indirect_rmw.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
 
 **Note:** This section is currently incomplete. Further documentation will be added soon™.

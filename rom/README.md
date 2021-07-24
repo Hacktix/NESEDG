@@ -1,3 +1,5 @@
+[<< Back to Last Page](../)
+
 # ROMs & Mappers
 
 After setting up a basic memory system it's time to get a ROM file loading system into place. Generally there's two "versions" of NES ROM files, namely iNES and NES 2.0, however, for a start, only supporting iNES ROMs is enough.
