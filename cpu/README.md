@@ -70,6 +70,9 @@ Refer to the following image for reference on the meaning of the color-coded til
 - [Absolute Indexed Addressing - Read Instructions](#absolute-indexed-addressing---read-instructions)
 - [Absolute Indexed Addressing - Write Instructions](#absolute-indexed-addressing---write-instructions)
 - [Absolute Indexed Addressing - Read-Modify-Write Instructions](#absolute-indexed-addressing---read-modify-write-instructions)
+- [Indexed Indirect Addressing - Read Instructions](#indexed-indirect-addressing---read-instructions)
+- [Indexed Indirect Addressing - Write Instructions](#indexed-indirect-addressing---write-instructions)
+- [Indexed Indirect Addressing - Read-Modify-Write Instructions](#indexed-indirect-addressing---read-modify-write-instructions)
 
 ### Accumulator & Implied Addressing
 
@@ -297,6 +300,61 @@ The Absolute Indexed Addressing variants of the instructions listed above each t
 
 (`I` in the diagram above represents the value of the index register used to offset the given address)
 
+### Indexed Indirect Addressing - Read Instructions
 
+This applies to the following instructions: `LDA, ORA, EOR, AND, ADC, CMP, SBC, LAX`
+
+The Indexed Indirect Addressing variants of the instructions listed above each take 6 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The byte fetched in the previous cycle is used as the low address byte while the high byte is set to 0. A dummy read occurs on the resulting memory address. After the read occurs, the value of the index register is added to the address. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 4:** The value at the address calculated in the previous cycle is read and buffered. The address is incremented, but still limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 5:** The value at the incremented address from the previous cycle is read and buffered as the upper byte of a new address, while the value read in the previous cycle represents the lower byte.
+* **Cycle 6:** The operation is performed on the target register using the value read from the memory address calculated in the previous cycle.
+
+**Timing Diagram:**
+
+![timing_indexed_indirect_read](./timing_indexed_indirect_read.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
+### Indexed Indirect Addressing - Write Instructions
+
+This applies to the following instructions: `STA, SAX`
+
+The Indexed Indirect Addressing variants of the instructions listed above each take 6 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The byte fetched in the previous cycle is used as the low address byte while the high byte is set to 0. A dummy read occurs on the resulting memory address. After the read occurs, the value of the index register is added to the address. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 4:** The value at the address calculated in the previous cycle is read and buffered. The address is incremented, but still limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 5:** The value at the incremented address from the previous cycle is read and buffered as the upper byte of a new address, while the value read in the previous cycle represents the lower byte.
+* **Cycle 6:** The value is written to the memory address calculated in the previous cycle.
+
+**Timing Diagram:**
+
+![timing_indexed_indirect_write](./timing_indexed_indirect_write.png)
+
+(`I` in the diagram above represents the value of the index register used to offset the given address)
+
+### Indexed Indirect Addressing - Read-Modify-Write Instructions
+
+This applies to the following instructions: `SLO, SRE, RLA, RRA, ISB, DCP`
+
+The Indexed Indirect Addressing variants of the instructions listed above each take 8 CPU cycles:
+
+* **Cycle 1:** The opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 2:** The byte after the opcode is fetched from the address stored in PC and PC is incremented by 1.
+* **Cycle 3:** The byte fetched in the previous cycle is used as the low address byte while the high byte is set to 0. A dummy read occurs on the resulting memory address. After the read occurs, the value of the index register is added to the address. The result is limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 4:** The value at the address calculated in the previous cycle is read and buffered. The address is incremented, but still limited to 8 bits, so it is effectively ANDed with `$FF`.
+* **Cycle 5:** The value at the incremented address from the previous cycle is read and buffered as the upper byte of a new address, while the value read in the previous cycle represents the lower byte.
+* **Cycle 6:** The value at the memory address calculated in the previous cycle is read and buffered.
+* **Cycle 7:** The buffered value is dummy-written back to the same address as it was read from. Afterwards, the operation is performed on the buffered value and the result is buffered.
+* **Cycle 8:** The resulting value is written to the memory address determined in cycle 5.
+
+**Timing Diagram:**
+
+![timing_indexed_indirect_rmw](./timing_indexed_indirect_rmw.png)
 
 **Note:** This section is currently incomplete. Further documentation will be added soon™.
